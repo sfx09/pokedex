@@ -5,20 +5,20 @@ import (
 	"os"
 )
 
-func Eval(key string) {
+func Eval(args ...string) {
 	cmds := getCommands()
-	cmd, exists := cmds[key]
+	cmd, exists := cmds[args[0]]
 	if !exists {
 		cmds["help"].execute()
 		return
 	}
-	cmd.execute()
+	cmd.execute(args[1:]...)
 }
 
 type command struct {
 	Name    string
 	Desc    string
-	execute func() error
+	execute func(args ...string) error
 }
 
 func getCommands() map[string]command {
@@ -36,7 +36,7 @@ func getCommands() map[string]command {
 	}
 }
 
-func helpCommand() error {
+func helpCommand(args ...string) error {
 	fmt.Println("Usage")
 	for _, c := range getCommands() {
 		fmt.Printf("%s: %s\n", c.Name, c.Desc)
@@ -44,7 +44,7 @@ func helpCommand() error {
 	return nil
 }
 
-func exitCommand() error {
+func exitCommand(args ...string) error {
 	fmt.Println("Exiting...")
 	os.Exit(0)
 	return nil

@@ -4,14 +4,16 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
-func eventloop(eval func(string)) {
+func EventLoop(eval func(...string)) {
 	sc := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Printf("> ")
 		sc.Scan()
 		op := sc.Text()
-		eval(op)
+		args := strings.Fields(op)
+		eval(args...)
 	}
 }
