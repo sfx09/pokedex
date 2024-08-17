@@ -26,6 +26,7 @@ type command struct {
 }
 
 func getCommands() map[string]command {
+	mpf, mpb := NewMapCommand()
 	return map[string]command{
 		"help": {
 			Name:    "help",
@@ -40,7 +41,12 @@ func getCommands() map[string]command {
 		"map": {
 			Name:    "map",
 			Desc:    "List Pokemon locations",
-			execute: NewMapCommand(),
+			execute: mpf,
+		},
+		"mapb": {
+			Name:    "mapb",
+			Desc:    "List Previous 20 Pokemon locations",
+			execute: mpb,
 		},
 	}
 }
@@ -59,7 +65,7 @@ func exitCommand(args ...string) error {
 	return nil
 }
 
-func NewMapCommand() func(args ...string) error {
+func NewMapCommand() (func(args ...string) error, func(args ...string) error) {
 	type Response struct {
 		Previous string
 		Next     string
@@ -70,7 +76,7 @@ func NewMapCommand() func(args ...string) error {
 	}
 	resp := Response{}
 	url := "https://pokeapi.co/api/v2/location/"
-	return func(args ...string) error {
+	mapf := func(args ...string) error {
 		r, err := http.Get(url)
 		if err != nil {
 			return err
@@ -85,4 +91,5 @@ func NewMapCommand() func(args ...string) error {
 		url = resp.Next
 		return nil
 	}
+	return mapf, mapf
 }
