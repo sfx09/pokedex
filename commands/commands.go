@@ -1,5 +1,7 @@
 package commands
 
+import "fmt"
+
 type command struct {
 	Name    string
 	Desc    string
@@ -14,7 +16,10 @@ func NewCommandEvalutor() func(...string) {
 			cmds["help"].execute()
 			return
 		}
-		cmd.execute(args[1:]...)
+		err := cmd.execute(args[1:]...)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
