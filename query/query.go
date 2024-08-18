@@ -11,18 +11,18 @@ import (
 // Query and cache HTTP endpoints
 type Inquisitor struct {
 	interval time.Duration
-	cache    map[string]Entry
+	cache    map[string]entry
 	mu       *sync.Mutex
 }
 
-type Entry struct {
+type entry struct {
 	createdAt time.Time
 	value     []byte
 }
 
 func NewInquisitor(cacheDuration int) Inquisitor {
 	i := Inquisitor{
-		cache:    make(map[string]Entry),
+		cache:    make(map[string]entry),
 		mu:       &sync.Mutex{},
 		interval: time.Duration(cacheDuration) * time.Second,
 	}
@@ -60,7 +60,7 @@ func (i *Inquisitor) Get(key string) ([]byte, bool) {
 func (i *Inquisitor) Add(key string, val []byte) {
 	i.mu.Lock()
 	defer i.mu.Unlock()
-	i.cache[key] = Entry{
+	i.cache[key] = entry{
 		createdAt: time.Now(),
 		value:     val,
 	}
