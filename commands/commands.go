@@ -1,6 +1,10 @@
 package commands
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/sfx09/pokedex/poke"
+)
 
 type command struct {
 	Name    string
@@ -24,6 +28,7 @@ func NewCommandEvalutor() func(...string) {
 }
 
 func getCommands() map[string]command {
+	state := poke.NewState()
 	return map[string]command{
 		"help": {
 			Name:    "help",
@@ -35,15 +40,15 @@ func getCommands() map[string]command {
 			Desc:    "Exit the program",
 			execute: exitCommand,
 		},
-		// "map": {
-		// 	Name:    "map",
-		// 	Desc:    "List Next 20 Pokemon locations",
-		// 	execute: mpf,
-		// },
-		// "mapb": {
-		// 	Name:    "mapb",
-		// 	Desc:    "List Previous 20 Pokemon locations",
-		// 	execute: mpb,
-		// },
+		"map": {
+			Name:    "map",
+			Desc:    "List Next 20 Pokemon locations",
+			execute: state.MapForward,
+		},
+		"mapb": {
+			Name:    "mapb",
+			Desc:    "List Previous 20 Pokemon locations",
+			execute: state.MapBackward,
+		},
 	}
 }
