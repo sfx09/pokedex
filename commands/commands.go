@@ -38,7 +38,7 @@ func getCommands() map[string]command {
 		},
 		"map": {
 			Name:    "map",
-			Desc:    "List Pokemon locations",
+			Desc:    "List Next 20 Pokemon locations",
 			execute: mpf,
 		},
 		"mapb": {
