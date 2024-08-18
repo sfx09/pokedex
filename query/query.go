@@ -31,7 +31,7 @@ func NewInquisitor(cacheDuration int) Inquisitor {
 }
 
 func (i *Inquisitor) Query(url string, v any) error {
-	data, exists := i.Get(url)
+	data, exists := i.get(url)
 	if exists {
 		return json.Unmarshal(data, &v)
 	}
@@ -43,11 +43,11 @@ func (i *Inquisitor) Query(url string, v any) error {
 	if err != nil {
 		return err
 	}
-	i.Add(url, data)
+	i.add(url, data)
 	return json.Unmarshal(data, &v)
 }
 
-func (i *Inquisitor) Get(key string) ([]byte, bool) {
+func (i *Inquisitor) get(key string) ([]byte, bool) {
 	i.mu.Lock()
 	defer i.mu.Unlock()
 	entry, exists := i.cache[key]
@@ -57,7 +57,7 @@ func (i *Inquisitor) Get(key string) ([]byte, bool) {
 	return entry.value, true
 }
 
-func (i *Inquisitor) Add(key string, val []byte) {
+func (i *Inquisitor) add(key string, val []byte) {
 	i.mu.Lock()
 	defer i.mu.Unlock()
 	i.cache[key] = entry{
