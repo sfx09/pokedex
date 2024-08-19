@@ -17,7 +17,7 @@ type location struct {
 	NextUrl string
 }
 
-type locationResponse struct {
+type mapResponse struct {
 	Next     string
 	Previous string
 	Results  []struct {
@@ -31,13 +31,13 @@ func NewState() State {
 		in: query.NewInquisitor(10),
 		loc: location{
 			PrevUrl: "",
-			NextUrl: "http://pokeapi.co/api/v2/location",
+			NextUrl: "http://pokeapi.co/api/v2/location-area",
 		},
 	}
 }
 
 func (s *State) MapForward(args ...string) error {
-	r := locationResponse{}
+	r := mapResponse{}
 	err := s.in.Query(s.loc.NextUrl, &r)
 	if err != nil {
 		return errors.New("Unable to fetch results")
@@ -51,7 +51,7 @@ func (s *State) MapForward(args ...string) error {
 }
 
 func (s *State) MapBackward(args ...string) error {
-	r := locationResponse{}
+	r := mapResponse{}
 	err := s.in.Query(s.loc.PrevUrl, &r)
 	if err != nil {
 		return errors.New("Unable to fetch results")
