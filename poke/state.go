@@ -8,8 +8,9 @@ import (
 )
 
 type State struct {
-	in  query.Inquisitor
-	loc location
+	in         query.Inquisitor
+	loc        location
+	exploreUrl string
 }
 
 type location struct {
@@ -26,6 +27,15 @@ type mapResponse struct {
 	}
 }
 
+type locationResponse struct {
+	Encounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"pokemon"`
+	} `json:"pokemon_encounters"`
+}
+
 func NewState() State {
 	return State{
 		in: query.NewInquisitor(10),
@@ -33,7 +43,20 @@ func NewState() State {
 			PrevUrl: "",
 			NextUrl: "http://pokeapi.co/api/v2/location-area",
 		},
+		exploreUrl: "http://pokeapi.co/api/v2/location-area/",
 	}
+}
+
+func (s *State) ExploreLocation(args ...string) error {
+	r := locationResponse{}
+	err := s.in.Query(s.exploreUrl+args[0], &r)
+	if err != nil {
+		return errors.New("Unable to fetch results")
+	}
+	for _, encounter := range r.Encounters {
+		fmt.Println(encounter.Pokemon.Name)
+	}
+	return nil
 }
 
 func (s *State) MapForward(args ...string) error {

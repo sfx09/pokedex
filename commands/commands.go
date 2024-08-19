@@ -50,5 +50,10 @@ func getCommands() map[string]command {
 			Desc:    "List Previous 20 Pokemon locations",
 			execute: state.MapBackward,
 		},
+		"explore": {
+			Name:    "explore",
+			Desc:    "List Pokemons present in a given location",
+			execute: state.ExploreLocation,
+		},
 	}
 }
