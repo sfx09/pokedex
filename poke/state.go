@@ -17,8 +17,6 @@ func NewState() State {
 			PrevUrl: "",
 			NextUrl: LocationUrl,
 		},
-		pokedex: pokeDex{
-			pokemons: []pokemon{},
-		},
+		pokedex: pokeDex{},
 	}
 }
