@@ -35,3 +35,11 @@ func catch(p pokemon) bool {
 	odds := rand.Intn(p.BaseExperience)
 	return odds < 40
 }
+
+func (s *State) ListPokemons(args ...string) error {
+	fmt.Println("Owned Pokemons:")
+	for _, p := range s.pokedex.pokemons {
+		fmt.Println(" - ", p.Name)
+	}
+	return nil
+}

@@ -60,5 +60,10 @@ func getCommands() map[string]command {
 			Desc:    "Catch a pokemon",
 			execute: state.CatchPokemon,
 		},
+		"pokedex": {
+			Name:    "pokedex",
+			Desc:    "List all caught pokemons",
+			execute: state.ListPokemons,
+		},
 	}
 }
