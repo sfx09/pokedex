@@ -44,7 +44,7 @@ func (s *State) CatchPokemon(args ...string) error {
 
 func catch(p pokemon) bool {
 	odds := rand.Intn(p.BaseExperience)
-	return odds < 200
+	return odds < 40
 }
 
 func (s *State) ListPokemons(args ...string) error {
